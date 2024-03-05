@@ -4,12 +4,18 @@
 \alias{create_chat}
 \title{Create a chat object.}
 \usage{
-create_chat(vendor, api_key)
+create_chat(
+  vendor,
+  api_key = "",
+  port = if (vendor == "ollama") 11434 else NULL
+)
 }
 \arguments{
-\item{vendor}{A character vector with one element. Currently, only 'openai' and 'mistral' are supported.}
+\item{vendor}{A character vector with one element. Currently, only 'openai', 'mistral' and 'ollama' are supported.}
 
-\item{api_key}{The API key for the vendor's chat engine.}
+\item{api_key}{The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.}
+
+\item{port}{The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.}
 }
 \value{
 A chat object

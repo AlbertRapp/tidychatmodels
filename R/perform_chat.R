@@ -47,7 +47,13 @@ perform_chat <- function(chat_obj) {
     httr2::req_perform() |>
     httr2::resp_body_json()
 
-  chat_obj$messages[[length(chat_obj$messages) + 1]] <- response$choices[[1]]$message
+  if (chat_obj$vendor_name == 'ollama') {
+    chat_obj$messages[[length(chat_obj$messages) + 1]] <- response$message
+  }
+
+  if (chat_obj$vendor_name != 'ollama') {
+    chat_obj$messages[[length(chat_obj$messages) + 1]] <- response$choices[[1]]$message
+  }
   chat_obj$usage[[length(chat_obj$usage) + 1]] <- response$usage
   chat_obj
 }
