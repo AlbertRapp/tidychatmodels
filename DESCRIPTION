@@ -16,4 +16,5 @@ Imports:
     httr2,
     rlang,
     utils
-
+URL: https://github.com/AlbertRapp/tidychatmodels
+BugReports: https://github.com/AlbertRapp/tidychatmodels/issues
