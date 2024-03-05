@@ -1,0 +1,32 @@
+
+
+```{r}
+dotenv::load_dot_env('../.env')
+chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>
+  add_model('gpt-3.5-turbo') |>
+  add_params('temperature' = 0.5, 'max_tokens' = 100) |>
+  add_message(
+    role = 'system',
+    message = 'You are a chatbot that completes texts.
+    You do not return the full text.
+    Just what you think completes the text.'
+  ) |>
+  add_message('2 + 2 is 4, minus 1 that\'s 3, ')
+chat_openai <- chat_openai |>
+    perform_chat()
+chat_openai |> extract_chat()
+```
+
+
+
+```{r}
+chat_openai <- chat_openai |> 
+  add_message(
+    role = 'user',
+    message = 'Make it cooler!'
+  ) |> 
+  add_params(temperature = 0.9) |> 
+  perform_chat()
+chat_openai |> extract_chat()
+```
+

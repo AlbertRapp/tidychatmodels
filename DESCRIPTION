@@ -1,11 +1,19 @@
 Package: tidychatmodels
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Chat With All Kinds of AI Models Through a Common Interface
 Version: 0.1.0
-Author: Who wrote it
+Author: person("Albert", "Rapp", , "info@albert-rapp.de", role = c("aut", "cre"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: This packages lets you chat with models from openAI and mistral.ai really easily.
+    This package is set up in a modular fashion (similar to {tidymodels}) so that it is easy to switch
+    between using any model from openAI, mistral.ai and in the future hopefully other model providers. 
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.3
+Imports: 
+    crayon,
+    httr2,
+    rlang,
+    utils
+
