@@ -21,3 +21,6 @@ Imports:
     utils
 URL: https://github.com/AlbertRapp/tidychatmodels
 BugReports: https://github.com/AlbertRapp/tidychatmodels/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
