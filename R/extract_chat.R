@@ -52,6 +52,14 @@ extract_chat <- function(chat_obj, silent = FALSE) {
       }
     }
   }
-  invisible(chat_obj$messages)
+  transposed_and_flattened_chats <- chat_obj$messages |>
+    purrr::transpose() |>
+    purrr::map(unlist)
+
+  msg_tibble <- tibble::tibble(
+    role = transposed_and_flattened_chats$role,
+    message = transposed_and_flattened_chats$content
+  )
+  invisible(msg_tibble)
 }
 

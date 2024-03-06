@@ -17,6 +17,7 @@ Imports:
     httr2,
     knitr,
     rlang,
+    tibble,
     utils
 URL: https://github.com/AlbertRapp/tidychatmodels
 BugReports: https://github.com/AlbertRapp/tidychatmodels/issues

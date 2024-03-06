@@ -1,6 +1,7 @@
 #' Sends the chat to the engine and adds the response to the chat object
 #'
 #' @param chat_obj A chat object created from `create_chat()`
+#' @param dry_run A logical indicating whether to return the prepared `httr2` request without actually sending out the request to the vendor. Defaults to FALSE.
 #'
 #' @return A chat object with the responses added
 #' @export
@@ -33,7 +34,7 @@
 #'   chat_mistral <- chat_mistral |>
 #'     perform_chat()
 #'  }
-perform_chat <- function(chat_obj) {
+perform_chat <- function(chat_obj, dry_run = FALSE) {
   prepared_engine <- chat_obj$engine |>
     httr2::req_body_json(
       data = rlang::list2(
@@ -42,6 +43,8 @@ perform_chat <- function(chat_obj) {
         !!!chat_obj$params
       )
     )
+
+  if (dry_run) return(prepared_engine)
 
   response <- prepared_engine |>
     httr2::req_perform() |>
