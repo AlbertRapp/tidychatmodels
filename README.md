@@ -183,7 +183,7 @@ create_chat('openai', Sys.getenv('OAI_DEV_KEY')) |>
 ```
 
 You can easily switch so some other vendor now. For example, let’s go
-for the `mistral-tiny` model from
+for the `mistral-large-latest` model from
 [Mistral.ai](https://docs.mistral.ai/api/).
 
 ``` r
