@@ -16,6 +16,7 @@ Imports:
     glue,
     httr2,
     knitr,
+    purrr,
     rlang,
     tibble,
     utils

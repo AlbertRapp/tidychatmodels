@@ -4,10 +4,12 @@
 \alias{perform_chat}
 \title{Sends the chat to the engine and adds the response to the chat object}
 \usage{
-perform_chat(chat_obj)
+perform_chat(chat_obj, dry_run = FALSE)
 }
 \arguments{
 \item{chat_obj}{A chat object created from `create_chat()`}
+
+\item{dry_run}{A logical indicating whether to return the prepared `httr2` request without actually sending out the request to the vendor. Defaults to FALSE.}
 }
 \value{
 A chat object with the responses added
