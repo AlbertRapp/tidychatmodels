@@ -71,14 +71,14 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
 }
 
 #' @export
-print.chat <- function(chat_obj) {
-  cat(crayon::green("Chat Engine:"), chat_obj$vendor_name, "\n")
-  cat(crayon::green("Messages:"), length(chat_obj$messages), "\n")
-  if (length(chat_obj$model) > 0) cat(crayon::green("Model:"), chat_obj$model, "\n")
-  if (length(chat_obj$params) > 0) {
+print.chat <- function(x, ...) {
+  cat(crayon::green("Chat Engine:"), x$vendor_name, "\n")
+  cat(crayon::green("Messages:"), length(x$messages), "\n")
+  if (length(x$model) > 0) cat(crayon::green("Model:"), x$model, "\n")
+  if (length(x$params) > 0) {
     cat(crayon::green("Parameters:"), "\n")
-    for (param in names(chat_obj$params)) {
-      cat(crayon::blue("  ", paste0(param, ":")), chat_obj$params[[param]], "\n")
+    for (param in names(x$params)) {
+      cat(crayon::blue("  ", paste0(param, ":")), x$params[[param]], "\n")
     }
   }
 }
