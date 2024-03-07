@@ -116,7 +116,7 @@ chat_openai |> extract_chat()
 ##     You do not return the full text.
 ##     Just what you think completes the text. 
 ## User: 2 + 2 is 4, minus 1 that's 3,  
-## Assistant: quick maths.
+## Assistant: Quick maths!
 ```
 
 Excellent! ChatGPT seems to know the next line of this [glorious
@@ -132,7 +132,7 @@ msgs
 ##   <chr>     <chr>                                                               
 ## 1 system    "You are a chatbot that completes texts.\n    You do not return the…
 ## 2 user      "2 + 2 is 4, minus 1 that's 3, "                                    
-## 3 assistant "quick maths."
+## 3 assistant "Quick maths!"
 ```
 
 You could add another message to the chat by adding a user message and
@@ -153,9 +153,9 @@ chat_openai |> extract_chat()
 ##     You do not return the full text.
 ##     Just what you think completes the text. 
 ## User: 2 + 2 is 4, minus 1 that's 3,  
-## Assistant: quick maths. 
+## Assistant: Quick maths! 
 ## User: Make it cooler! 
-## Assistant: Everyday man's on the block.
+## Assistant: Everyday man's on the block!
 ```
 
 Ah yes, that’s much cooler. But beware, this sent the whole chat again
@@ -211,11 +211,11 @@ mistral_chat |> extract_chat()
 
 ## Supported vendors
 
-Currently only supported vendors are openAI, mistral.ai and ollama.
-ollama allows you to deploy local LLMs and chat with them through
-`localhost`. The ollama’s API is a bit different but on our
-`tidychatmodels` interface everything should still works the same or
-very similar.
+Currently only supported vendors are openAI, mistral.ai and
+[ollama](https://ollama.com/). ollama allows you to deploy local LLMs
+and chat with them through `localhost`. The ollama’s API is a bit
+different but on our `tidychatmodels` interface everything should still
+works the same or be at least very similar.
 
 For example, creating a chat works pretty much the same but doesn’t
 require an API key.
@@ -229,7 +229,7 @@ create_chat('ollama')
 ```
 
 Notice how there is already a parameter `stream` that is set to `false`.
-This is a change in the API of the ollama chat engine. You see by
+This is a change in the API of the ollama chat engine. You see, by
 default ollama will stream the reply token by token. But `{httr2}`
 doesn’t want that (or rather I didn’t bother looking into how to do that
 with `{httr2}`). So that’s why by default we set `stream` to `false`.
@@ -267,7 +267,7 @@ ollama_chat <- create_chat('ollama') |>
 ollama_chat |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person.
+## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person.
 ```
 
 And adding more messages works too.
@@ -280,17 +280,17 @@ ollama_chat <- ollama_chat |>
 ollama_chat |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. 
+## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment.
+## Assistant: Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person.
 ```
 
 ``` r
 msgs <- ollama_chat |> extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. 
+## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment.
+## Assistant: Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person.
 
 ollama_chat |> 
   add_message(
@@ -304,9 +304,9 @@ ollama_chat |>
   perform_chat() |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. 
+## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment. 
-## User: You said: " Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment. " Is there a relationship between these two? 
-## Assistant: Sure, there is a relationship between love and hate. Hate often stems from a lack of love or understanding. When we lack love for someone, it can lead to hatred. Conversely, when we have love for someone, it can help to overcome hatred.
+## Assistant: Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person. 
+## User: You said: " Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person. " Is there a relationship between these two? 
+## Assistant: Sure, there is a relationship between love and hate. Love and hate are opposite emotions, and they are often interconnected. When we love someone, we often feel less hate towards them. And when we hate someone, we often feel less love for them.
 ```

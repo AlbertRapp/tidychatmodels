@@ -147,7 +147,7 @@ create_chat('openai', Sys.getenv('OAI_DEV_KEY')) |>
 
 
 You can easily switch so some other vendor now.
-For example, let's go for the `mistral-tiny` model from [Mistral.ai](https://docs.mistral.ai/api/).
+For example, let's go for the `mistral-large-latest` model from [Mistral.ai](https://docs.mistral.ai/api/).
 
 ```{r}
 mistral_chat <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY')) |>
@@ -169,9 +169,9 @@ mistral_chat |> extract_chat()
 
 ## Supported vendors
 
-Currently only supported vendors are openAI, mistral.ai and ollama.
+Currently only supported vendors are openAI, mistral.ai and [ollama](https://ollama.com/).
 ollama allows you to deploy local LLMs and chat with them through `localhost`.
-The ollama's API is a bit different but on our `tidychatmodels` interface everything should still works the same or very similar.
+The ollama's API is a bit different but on our `tidychatmodels` interface everything should still works the same or be at least very similar.
 
 For example, creating a chat works pretty much the same but doesn't require an API key.
 
@@ -181,7 +181,7 @@ create_chat('ollama')
 
 Notice how there is already a parameter `stream` that is set to `false`.
 This is a change in the API of the ollama chat engine.
-You see by default ollama will stream the reply token by token.
+You see, by default ollama will stream the reply token by token.
 But `{httr2}` doesn't want that (or rather I didn't bother looking into how to do that with `{httr2}`).
 So that's why by default we set `stream` to `false`.
 
