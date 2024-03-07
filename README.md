@@ -2,6 +2,8 @@
 
 # tidychatmodels
 
+<img src="tidychatmodels.png" width="400" />
+
 ## About this package
 
 This package provides a simple interface to chat with your favorite AI
@@ -55,11 +57,10 @@ which models are available at a vendor like OpenAI.
 ``` r
 chat_openai |>
   add_model('gpt-3.5-turbo')
+## Chat Engine: openai 
+## Messages: 0 
+## Model: gpt-3.5-turbo
 ```
-
-    Chat Engine: openai 
-    Messages: 0 
-    Model: gpt-3.5-turbo 
 
 Similarly, you can add parameters to the chat object.
 
@@ -67,14 +68,13 @@ Similarly, you can add parameters to the chat object.
 create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>
   add_model('gpt-3.5-turbo') |>
   add_params('temperature' = 0.5, 'max_tokens' = 100)
+## Chat Engine: openai 
+## Messages: 0 
+## Model: gpt-3.5-turbo 
+## Parameters: 
+##    temperature: 0.5 
+##    max_tokens: 100
 ```
-
-    Chat Engine: openai 
-    Messages: 0 
-    Model: gpt-3.5-turbo 
-    Parameters: 
-       temperature: 0.5 
-       max_tokens: 100 
 
 Afterwards, you can add messages to your chat object using different
 roles. Typically, you might first use a system manage to set the stage
@@ -96,14 +96,13 @@ chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>
     '2 + 2 is 4, minus 1 that\'s 3, '
   ) 
 chat_openai
+## Chat Engine: openai 
+## Messages: 2 
+## Model: gpt-3.5-turbo 
+## Parameters: 
+##    temperature: 0.5 
+##    max_tokens: 100
 ```
-
-    Chat Engine: openai 
-    Messages: 2 
-    Model: gpt-3.5-turbo 
-    Parameters: 
-       temperature: 0.5 
-       max_tokens: 100 
 
 At this stage, you haven’t actually started any chat with the bot. You
 can do so by calling the `perform_chat` method. Beware that this will
@@ -113,16 +112,29 @@ performed, you can extract the chat from the chat object.
 ``` r
 chat_openai <- chat_openai |> perform_chat()
 chat_openai |> extract_chat()
+## System: You are a chatbot that completes texts.
+##     You do not return the full text.
+##     Just what you think completes the text. 
+## User: 2 + 2 is 4, minus 1 that's 3,  
+## Assistant: quick maths.
 ```
-
-    System: You are a chatbot that completes texts.
-        You do not return the full text.
-        Just what you think completes the text. 
-    User: 2 + 2 is 4, minus 1 that's 3,  
-    Assistant: quick math 
 
 Excellent! ChatGPT seems to know the next line of this [glorious
 song](https://www.youtube.com/watch?v=M3ujv8xdK2w&ab_channel=musiclyrics).
+Also, you can save the chat into a tibble. If you want to surpress the
+output of the chat, you can use the `silent` parameter.
+
+``` r
+msgs <- chat_openai |> extract_chat(silent = TRUE)
+msgs
+## # A tibble: 3 × 2
+##   role      message                                                             
+##   <chr>     <chr>                                                               
+## 1 system    "You are a chatbot that completes texts.\n    You do not return the…
+## 2 user      "2 + 2 is 4, minus 1 that's 3, "                                    
+## 3 assistant "quick maths."
+```
+
 You could add another message to the chat by adding a user message and
 then performing the chat again. While we’re at it, let’s just modify the
 `temperature` parameter to for this new reply.
@@ -137,15 +149,14 @@ chat_openai <- chat_openai |>
   perform_chat()
 
 chat_openai |> extract_chat()
+## System: You are a chatbot that completes texts.
+##     You do not return the full text.
+##     Just what you think completes the text. 
+## User: 2 + 2 is 4, minus 1 that's 3,  
+## Assistant: quick maths. 
+## User: Make it cooler! 
+## Assistant: Everyday man's on the block.
 ```
-
-    System: You are a chatbot that completes texts.
-        You do not return the full text.
-        Just what you think completes the text. 
-    User: 2 + 2 is 4, minus 1 that's 3,  
-    Assistant: quick math 
-    User: Make it cooler! 
-    Assistant: everyday man's on the block 
 
 Ah yes, that’s much cooler. But beware, this sent the whole chat again
 and consumed another API call.
@@ -191,13 +202,12 @@ mistral_chat <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY')) |>
   ) |> 
   perform_chat()
 mistral_chat |> extract_chat()
+## System: You are a chatbot that completes texts.
+##     You do not return the full text.
+##     Just what you think completes the text. 
+## User: 2 + 2 is 4, minus 1 that's 3,  
+## Assistant: and if you add 5, that makes 8.
 ```
-
-    System: You are a chatbot that completes texts.
-        You do not return the full text.
-        Just what you think completes the text. 
-    User: 2 + 2 is 4, minus 1 that's 3,  
-    Assistant: and if you add 5, that makes 8. 
 
 ## Supported vendors
 
@@ -212,12 +222,11 @@ require an API key.
 
 ``` r
 create_chat('ollama') 
+## Chat Engine: ollama 
+## Messages: 0 
+## Parameters: 
+##    stream: FALSE
 ```
-
-    Chat Engine: ollama 
-    Messages: 0 
-    Parameters: 
-       stream: FALSE 
 
 Notice how there is already a parameter `stream` that is set to `false`.
 This is a change in the API of the ollama chat engine. You see by
@@ -237,13 +246,12 @@ Then you can add the model to your chat object.
 ``` r
 create_chat('ollama') |>
   add_model('gemma:7b')
+## Chat Engine: ollama 
+## Messages: 0 
+## Model: gemma:7b 
+## Parameters: 
+##    stream: FALSE
 ```
-
-    Chat Engine: ollama 
-    Messages: 0 
-    Model: gemma:7b 
-    Parameters: 
-       stream: FALSE 
 
 And just like before, you can add messages and perform the chat. Beware
 though that for some models system messages are not actually working
@@ -258,10 +266,9 @@ ollama_chat <- create_chat('ollama') |>
 
 ollama_chat |> 
   extract_chat()
+## User: What is love? IN 10 WORDS. 
+## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person.
 ```
-
-    User: What is love? IN 10 WORDS. 
-    Assistant: Love is a feeling of deep affection and emotional attachment to another person. It involves feelings of caring, protectiveness, and intimacy. 
 
 And adding more messages works too.
 
@@ -272,41 +279,34 @@ ollama_chat <- ollama_chat |>
 
 ollama_chat |> 
   extract_chat()
+## User: What is love? IN 10 WORDS. 
+## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. 
+## User: Now describe hate in 10 words 
+## Assistant: Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment.
 ```
-
-    User: What is love? IN 10 WORDS. 
-    Assistant: Love is a feeling of deep affection and emotional attachment to another person. It involves feelings of caring, protectiveness, and intimacy. 
-    User: Now describe hate in 10 words 
-    Assistant: Hate is a feeling of intense dislike, disgust, or aversion towards a person or group. It is characterized by feelings of hostility, resentment, and often by a desire to harm. 
 
 ``` r
 msgs <- ollama_chat |> extract_chat()
-```
+## User: What is love? IN 10 WORDS. 
+## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. 
+## User: Now describe hate in 10 words 
+## Assistant: Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment.
 
-    User: What is love? IN 10 WORDS. 
-    Assistant: Love is a feeling of deep affection and emotional attachment to another person. It involves feelings of caring, protectiveness, and intimacy. 
-    User: Now describe hate in 10 words 
-    Assistant: Hate is a feeling of intense dislike, disgust, or aversion towards a person or group. It is characterized by feelings of hostility, resentment, and often by a desire to harm. 
-
-``` r
 ollama_chat |> 
   add_message(
     paste(
       'You said: "',
-      msgs[[2]]$content, 
-      msgs[[4]]$content,
+      msgs$message[2], 
+      msgs$message[4],
       '" Is there a relationship between these two?'
     )
   ) |> 
   perform_chat() |> 
   extract_chat()
+## User: What is love? IN 10 WORDS. 
+## Assistant: Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. 
+## User: Now describe hate in 10 words 
+## Assistant: Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment. 
+## User: You said: " Love is a complex emotion that involves connection, intimacy, and compassion. It's a feeling of deep affection and attachment towards another person. Hate is an intense feeling of dislike or disgust towards someone or something. It often involves anger, hostility, and resentment. " Is there a relationship between these two? 
+## Assistant: Sure, there is a relationship between love and hate. Hate often stems from a lack of love or understanding. When we lack love for someone, it can lead to hatred. Conversely, when we have love for someone, it can help to overcome hatred.
 ```
-
-    User: What is love? IN 10 WORDS. 
-    Assistant: Love is a feeling of deep affection and emotional attachment to another person. It involves feelings of caring, protectiveness, and intimacy. 
-    User: Now describe hate in 10 words 
-    Assistant: Hate is a feeling of intense dislike, disgust, or aversion towards a person or group. It is characterized by feelings of hostility, resentment, and often by a desire to harm. 
-    User: You said: " Love is a feeling of deep affection and emotional attachment to another person. It involves feelings of caring, protectiveness, and intimacy. Hate is a feeling of intense dislike, disgust, or aversion towards a person or group. It is characterized by feelings of hostility, resentment, and often by a desire to harm. " Is there a relationship between these two? 
-    Assistant: Sure, here is the relationship between love and hate in 10 words:
-
-    Love and hate are two opposing emotions that are often interconnected, with love and hate often being inversely proportional to each other. 
