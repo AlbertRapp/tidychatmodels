@@ -12,7 +12,7 @@ create_chat(
 )
 }
 \arguments{
-\item{vendor}{A character vector with one element. Currently, only 'openai', 'mistral' and 'ollama' are supported.}
+\item{vendor}{A character vector with one element. Currently, only 'openai', 'mistral', 'anthropic' and 'ollama' are supported.}
 
 \item{api_key}{The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.}
 

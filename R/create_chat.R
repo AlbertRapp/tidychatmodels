@@ -1,6 +1,6 @@
 #' Create a chat object.
 #'
-#' @param vendor A character vector with one element. Currently, only 'openai', 'mistral' and 'ollama' are supported.
+#' @param vendor A character vector with one element. Currently, only 'openai', 'mistral', 'anthropic' and 'ollama' are supported.
 #' @param api_key The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.
 #' @param port The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.
 #' @param api_version Api version that is required for Anthropic

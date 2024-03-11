@@ -4,3 +4,6 @@
 .Ruserdata
 .env
 docs
+
+# Local Netlify folder
+.netlify
