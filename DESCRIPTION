@@ -2,8 +2,9 @@ Package: tidychatmodels
 Type: Package
 Title: Chat With All Kinds of AI Models Through a Common Interface
 Version: 0.1.0
-Author: person("Albert", "Rapp", , "info@albert-rapp.de", role = c("aut", "cre"))
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: (
+    person("Albert", "Rapp", , "info@albert-rapp.de", role = c("aut", "cre"))
+  )
 Description: This packages lets you chat with models from openAI and mistral.ai really easily.
     This package is set up in a modular fashion (similar to {tidymodels}) so that it is easy to switch
     between using any model from openAI, mistral.ai and in the future hopefully other model providers. 

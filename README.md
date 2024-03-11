@@ -22,6 +22,13 @@ underlying package that handles all the communication is the
 `{httr2}`, you could check out one of my tutorials [on
 YouTube](https://youtu.be/hmtE4QGIOuk).
 
+## Video walkthrough
+
+If you want to get a video walkthrough for this package, check out:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RjtADzX-sJY?si=ZdyPZxp3Meaqxt4j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+</iframe>
+
 ## Installation
 
 Currently this package is only available on GitHub. To install it, you
@@ -155,7 +162,7 @@ chat_openai |> extract_chat()
 ## User: 2 + 2 is 4, minus 1 that's 3,  
 ## Assistant: Quick maths! 
 ## User: Make it cooler! 
-## Assistant: Everyday man's on the block!
+## Assistant: Everyday man's on the block, smoke trees.
 ```
 
 Ah yes, that’s much cooler. But beware, this sent the whole chat again
@@ -267,7 +274,7 @@ ollama_chat <- create_chat('ollama') |>
 ollama_chat |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person.
+## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect.
 ```
 
 And adding more messages works too.
@@ -280,17 +287,17 @@ ollama_chat <- ollama_chat |>
 ollama_chat |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. 
+## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person.
+## Assistant: Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them.
 ```
 
 ``` r
 msgs <- ollama_chat |> extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. 
+## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person.
+## Assistant: Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them.
 
 ollama_chat |> 
   add_message(
@@ -304,9 +311,9 @@ ollama_chat |>
   perform_chat() |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. 
+## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person. 
-## User: You said: " Love is a feeling of intense affection and fondness for a person, often accompanied by a desire to protect and care for that person. Hate is a feeling of intense dislike or disgust for a person, often accompanied by a desire to harm or mistreat that person. " Is there a relationship between these two? 
-## Assistant: Sure, there is a relationship between love and hate. Love and hate are opposite emotions, and they are often interconnected. When we love someone, we often feel less hate towards them. And when we hate someone, we often feel less love for them.
+## Assistant: Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them. 
+## User: You said: " Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them. " Is there a relationship between these two? 
+## Assistant: Sure, there is a relationship between love and hate. Hate is often the opposite of love. When we hate someone, we often have negative feelings towards them, such as anger, resentment, and fear. Conversely, when we love someone, we often have positive feelings towards them, such as happiness, compassion, and understanding.
 ```
