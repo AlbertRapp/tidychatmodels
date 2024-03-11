@@ -18,6 +18,12 @@ Basically, this package is a wrapper around the API of different chatbots and pr
 The underlying package that handles all the communication is the [`{httr2}`](https://httr2.r-lib.org/) package.
 For a deep dive into `{httr2}`, you could check out one of my tutorials [on YouTube](https://youtu.be/hmtE4QGIOuk).
 
+## Video walkthrough
+
+If you want to get a video walkthrough for this package, check out:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RjtADzX-sJY?si=ZdyPZxp3Meaqxt4j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Installation
 
 Currently this package is only available on GitHub. To install it, you will need to use the `devtools` package.
