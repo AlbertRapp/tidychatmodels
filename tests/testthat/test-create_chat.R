@@ -58,3 +58,25 @@ test_that("mistral chat can be created", {
 })
 
 
+test_that("anthropic chat can be created", {
+  chat <- create_chat('anthropic', api_key = 'secret', api_version = '2023-06-01')
+
+  expect_equal(
+    chat$engine$url,
+    'https://api.anthropic.com/v1/messages'
+  )
+
+  expect_equal(chat$params$stream, NULL)
+  expect_equal(chat$messages, list())
+  headers_list <- list('secret','application/json', '2023-06-01')
+  attributes(headers_list) <- list(
+    names = c('x-api-key', 'Content-Type', 'anthropic-version'),
+    'redact' = character()
+  )
+  expect_equal(
+    chat$engine$headers,
+    headers_list
+  )
+})
+
+

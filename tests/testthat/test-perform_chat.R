@@ -85,4 +85,70 @@ test_that("ollama request fulfills API structure", {
 
 
 
+test_that("Anthropic request fulfills API structure (when system msg present)", {
+  chat <- create_chat('anthropic', api_key = 'secret', api_version = '2023-06-01') |>
+    add_model('claude-3-opus-20240229') |>
+    add_params(temperature = 0.5, max_tokens = 100) |>
+    add_message(
+      role = 'system',
+      message = 'You are a chatbot that completes texts.
+    You do not return the full text.
+    Just what you think completes the text.'
+    ) |>
+    add_message(
+      # default role = 'user'
+      '2 + 2 is 4, minus 1 that\'s 3, '
+    ) |>
+    perform_chat(dry_run = TRUE)
+
+  expect_equal(
+    chat$body$data$messages,
+    list(
+      list(role = 'user', content = '2 + 2 is 4, minus 1 that\'s 3, ')
+    )
+  )
+  expect_equal(
+    chat$body$data$system,
+    'You are a chatbot that completes texts.\n    You do not return the full text.\n    Just what you think completes the text.'
+  )
+  expect_equal(chat$url, 'https://api.anthropic.com/v1/messages')
+  expect_equal(chat$body$data$model, 'claude-3-opus-20240229')
+  expect_equal(chat$body$data$temperature, 0.5)
+  expect_equal(chat$body$data$max_tokens, 100)
+  expect_equal(chat$headers$`Content-Type`, 'application/json')
+  expect_equal(chat$headers$`x-api-key`, 'secret')
+  expect_equal(chat$headers$`anthropic-version`, '2023-06-01')
+
+})
+
+
+test_that("Anthropic request fulfills API structure (without system msg)", {
+  chat <- create_chat('anthropic', api_key = 'secret', api_version = '2023-06-01') |>
+    add_model('claude-3-opus-20240229') |>
+    add_params(temperature = 0.5, max_tokens = 100) |>
+    add_message(
+      # default role = 'user'
+      '2 + 2 is 4, minus 1 that\'s 3, '
+    ) |>
+    perform_chat(dry_run = TRUE)
+
+  expect_equal(
+    chat$body$data$messages,
+    list(
+      list(role = 'user', content = '2 + 2 is 4, minus 1 that\'s 3, ')
+    )
+  )
+  expect_equal(chat$body$data$system, NULL)
+  expect_equal(chat$url, 'https://api.anthropic.com/v1/messages')
+  expect_equal(chat$body$data$model, 'claude-3-opus-20240229')
+  expect_equal(chat$body$data$temperature, 0.5)
+  expect_equal(chat$body$data$max_tokens, 100)
+  expect_equal(chat$headers$`Content-Type`, 'application/json')
+  expect_equal(chat$headers$`x-api-key`, 'secret')
+  expect_equal(chat$headers$`anthropic-version`, '2023-06-01')
+
+})
+
+
+
 

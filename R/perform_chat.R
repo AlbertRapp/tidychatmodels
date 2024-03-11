@@ -35,14 +35,50 @@
 #'     perform_chat()
 #'  }
 perform_chat <- function(chat_obj, dry_run = FALSE) {
-  prepared_engine <- chat_obj$engine |>
-    httr2::req_body_json(
-      data = rlang::list2(
-        messages = chat_obj$messages,
-        model = chat_obj$model,
-        !!!chat_obj$params
+
+  if (chat_obj$vendor_name == 'anthropic') {
+    msgs <- chat_obj$messages
+
+    non_system_msgs <- msgs[purrr::map_lgl(msgs, \(x) x$role != 'system')]
+    system_msg <- msgs[purrr::map_lgl(msgs, \(x) x$role == 'system')]
+    if (length(system_msg) > 1) stop('There can only be one system message')
+
+    if (length(system_msg) == 0) {
+      prepared_engine <- chat_obj$engine |>
+        httr2::req_body_json(
+          data = rlang::list2(
+            messages = non_system_msgs,
+            model = chat_obj$model,
+            !!!chat_obj$params
+          )
+        )
+    }
+
+    if (length(system_msg) == 1) {
+      prepared_engine <- chat_obj$engine |>
+        httr2::req_body_json(
+          data = rlang::list2(
+            messages = non_system_msgs,
+            model = chat_obj$model,
+            system = system_msg[[1]]$content,
+            !!!chat_obj$params
+          )
+        )
+    }
+
+  }
+
+  if (chat_obj$vendor_name != 'anthropic') {
+    prepared_engine <- chat_obj$engine |>
+      httr2::req_body_json(
+        data = rlang::list2(
+          messages = chat_obj$messages,
+          model = chat_obj$model,
+          !!!chat_obj$params
+        )
       )
-    )
+  }
+
 
   if (dry_run) return(prepared_engine)
 
@@ -52,6 +88,13 @@ perform_chat <- function(chat_obj, dry_run = FALSE) {
 
   if (chat_obj$vendor_name == 'ollama') {
     chat_obj$messages[[length(chat_obj$messages) + 1]] <- response$message
+  }
+
+  if (chat_obj$vendor_name == 'anthropic') {
+    chat_obj$messages[[length(chat_obj$messages) + 1]] <- list(
+      role = 'assistant',
+      content = response$content[[1]]$text
+    )
   }
 
   if (chat_obj$vendor_name != 'ollama') {
