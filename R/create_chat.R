@@ -3,6 +3,7 @@
 #' @param vendor A character vector with one element. Currently, only 'openai', 'mistral' and 'ollama' are supported.
 #' @param api_key The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.
 #' @param port The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.
+#' @param api_version Api version that is required for Anthropic
 #'
 #' @return A chat object
 #' @export
@@ -13,8 +14,8 @@
 #' chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))
 #' chat_mistral <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY'))
 #' }
-create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 11434 else NULL) {
-  if (vendor != 'openai' & vendor != 'mistral' & vendor != 'ollama') stop('Unsupported vendor')
+create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 11434 else NULL, api_version = '') {
+  if (vendor != 'openai' & vendor != 'mistral' & vendor != 'ollama' & vendor != 'anthropic') stop('Unsupported vendor')
 
   if (vendor == 'openai') {
     # https://platform.openai.com/docs/api-reference/making-requests
@@ -48,6 +49,19 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
     )
   }
 
+  if (vendor == 'anthropic') {
+    # https://platform.openai.com/docs/api-reference/making-requests
+    if (api_version == '') stop('Anthropic requires API version')
+
+    engine <- httr2::request(
+      base_url ='https://api.anthropic.com/v1/messages'
+    ) |>
+      httr2::req_headers(
+        'x-api-key' = api_key,
+        'Content-Type' = 'application/json',
+        'anthropic-version' = api_version
+      )
+  }
 
 
   if (vendor == 'ollama') {

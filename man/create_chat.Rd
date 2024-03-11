@@ -7,7 +7,8 @@
 create_chat(
   vendor,
   api_key = "",
-  port = if (vendor == "ollama") 11434 else NULL
+  port = if (vendor == "ollama") 11434 else NULL,
+  api_version = ""
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ create_chat(
 \item{api_key}{The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.}
 
 \item{port}{The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.}
+
+\item{api_version}{Api version that is required for Anthropic}
 }
 \value{
 A chat object
