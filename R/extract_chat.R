@@ -60,6 +60,11 @@ extract_chat <- function(chat_obj, silent = FALSE) {
     role = transposed_and_flattened_chats$role,
     message = transposed_and_flattened_chats$content
   )
-  invisible(msg_tibble)
+  if (!silent) {
+    return(invisible(msg_tibble))
+  } else {
+    return(msg_tibble)
+  }
+
 }
 
