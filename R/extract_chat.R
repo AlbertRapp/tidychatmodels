@@ -38,17 +38,17 @@
 #'   }
 extract_chat <- function(chat_obj, silent = FALSE) {
   if (!silent) {
-    for (i in 1:length(chat_obj$messages)) {
-      if (chat_obj$messages[[i]]$role == 'system') {
-        cat(crayon::magenta('System:', chat_obj$messages[[i]]$content, '\n'))
+    for (i in seq_along(chat_obj$messages)) {
+      if (chat_obj$messages[[i]]$role == "system") {
+        cli::cli_text("{.field System}: {chat_obj$messages[[i]]$content}")
       }
 
-      if (chat_obj$messages[[i]]$role == 'user'){
-        cat(crayon::green('User:', chat_obj$messages[[i]]$content, '\n'))
+      if (chat_obj$messages[[i]]$role == "user") {
+        cli::cli_text("{.field User}: {chat_obj$messages[[i]]$content}")
       }
 
-      if (chat_obj$messages[[i]]$role == 'assistant'){
-        cat(crayon::blue('Assistant:', chat_obj$messages[[i]]$content, '\n'))
+      if (chat_obj$messages[[i]]$role == "assistant") {
+        cli::cli_text("{.field Assistant}: {chat_obj$messages[[i]]$content}")
       }
     }
   }
@@ -65,6 +65,4 @@ extract_chat <- function(chat_obj, silent = FALSE) {
   } else {
     return(msg_tibble)
   }
-
 }
-

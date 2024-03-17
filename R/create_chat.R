@@ -86,14 +86,16 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
 
 #' @export
 print.chat <- function(x, ...) {
-  cat(crayon::green("Chat Engine:"), x$vendor_name, "\n")
-  cat(crayon::green("Messages:"), length(x$messages), "\n")
-  if (length(x$model) > 0) cat(crayon::green("Model:"), x$model, "\n")
+  cli::cli_li("{.field Chat Engine}: {x$vendor_name}")
+  cli::cli_li("{.field Messages}: {length(x$messages)}")
+  if (length(x$model) > 0) cli::cli_li("{.field Model}: {x$model}")
   if (length(x$params) > 0) {
-    cat(crayon::green("Parameters:"), "\n")
+    cli::cli_li("{.field Parameters}:")
+    ul <- cli::cli_ul()
     for (param in names(x$params)) {
-      cat(crayon::blue("  ", paste0(param, ":")), x$params[[param]], "\n")
+      cli::cli_li("{.field {param}}: {x$params[[param]]}")
     }
+    cli::cli_end(ul)
   }
 }
 
@@ -102,5 +104,3 @@ print.chat <- function(x, ...) {
 knit_print.chat <- function(x, ...) {
   knitr::knit_print(x, ...)
 }
-
-
