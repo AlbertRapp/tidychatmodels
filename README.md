@@ -1,5 +1,10 @@
 
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/AlbertRapp/tidychatmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AlbertRapp/tidychatmodels/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # tidychatmodels
 
 <img src="tidychatmodels.png" width="400" />
@@ -123,7 +128,7 @@ chat_openai |> extract_chat()
 ##     You do not return the full text.
 ##     Just what you think completes the text. 
 ## User: 2 + 2 is 4, minus 1 that's 3,  
-## Assistant: Quick maths!
+## Assistant: quick maths!
 ```
 
 Excellent! ChatGPT seems to know the next line of this [glorious
@@ -139,7 +144,7 @@ msgs
 ##   <chr>     <chr>                                                               
 ## 1 system    "You are a chatbot that completes texts.\n    You do not return the…
 ## 2 user      "2 + 2 is 4, minus 1 that's 3, "                                    
-## 3 assistant "Quick maths!"
+## 3 assistant "quick maths!"
 ```
 
 You could add another message to the chat by adding a user message and
@@ -160,9 +165,9 @@ chat_openai |> extract_chat()
 ##     You do not return the full text.
 ##     Just what you think completes the text. 
 ## User: 2 + 2 is 4, minus 1 that's 3,  
-## Assistant: Quick maths! 
+## Assistant: quick maths! 
 ## User: Make it cooler! 
-## Assistant: Everyday man's on the block, smoke trees.
+## Assistant: everyday man's on the block
 ```
 
 Ah yes, that’s much cooler. But beware, this sent the whole chat again
@@ -274,7 +279,7 @@ ollama_chat <- create_chat('ollama') |>
 ollama_chat |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect.
+## Assistant: Love is a feeling of deep affection, connection, and intimacy with another person.
 ```
 
 And adding more messages works too.
@@ -287,17 +292,17 @@ ollama_chat <- ollama_chat |>
 ollama_chat |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. 
+## Assistant: Love is a feeling of deep affection, connection, and intimacy with another person. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them.
+## Assistant: Hate is a feeling of intense dislike or disgust for someone or something. It is characterized by feelings of hostility, resentment, and often by a desire to harm.
 ```
 
 ``` r
 msgs <- ollama_chat |> extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. 
+## Assistant: Love is a feeling of deep affection, connection, and intimacy with another person. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them.
+## Assistant: Hate is a feeling of intense dislike or disgust for someone or something. It is characterized by feelings of hostility, resentment, and often by a desire to harm.
 
 ollama_chat |> 
   add_message(
@@ -311,9 +316,9 @@ ollama_chat |>
   perform_chat() |> 
   extract_chat()
 ## User: What is love? IN 10 WORDS. 
-## Assistant: Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. 
+## Assistant: Love is a feeling of deep affection, connection, and intimacy with another person. 
 ## User: Now describe hate in 10 words 
-## Assistant: Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them. 
-## User: You said: " Love is a complex and multifaceted emotion, but in 10 words, it can be defined as a deep and enduring connection with another person characterized by intimacy, affection, and mutual respect. Hate is an intense feeling of dislike or disgust towards a person or group, often accompanied by a desire to harm or punish them. " Is there a relationship between these two? 
-## Assistant: Sure, there is a relationship between love and hate. Hate is often the opposite of love. When we hate someone, we often have negative feelings towards them, such as anger, resentment, and fear. Conversely, when we love someone, we often have positive feelings towards them, such as happiness, compassion, and understanding.
+## Assistant: Hate is a feeling of intense dislike or disgust for someone or something. It is characterized by feelings of hostility, resentment, and often by a desire to harm. 
+## User: You said: " Love is a feeling of deep affection, connection, and intimacy with another person. Hate is a feeling of intense dislike or disgust for someone or something. It is characterized by feelings of hostility, resentment, and often by a desire to harm. " Is there a relationship between these two? 
+## Assistant: Sure, there is a relationship between love and hate. Hate is often an opposite reaction to love. When you love someone, you feel positive feelings towards them, such as happiness, joy, and compassion. Conversely, when you hate someone, you feel negative feelings towards them, such as anger, resentment, and bitterness.
 ```

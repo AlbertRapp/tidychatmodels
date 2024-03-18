@@ -4,6 +4,10 @@ knitr:
   opts_chunk:
     collapse: true
 ---
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/AlbertRapp/tidychatmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AlbertRapp/tidychatmodels/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # tidychatmodels
 
 ![](tidychatmodels.png){width="400px"}
