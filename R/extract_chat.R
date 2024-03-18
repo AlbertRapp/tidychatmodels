@@ -38,17 +38,25 @@
 #'   }
 extract_chat <- function(chat_obj, silent = FALSE) {
   if (!silent) {
-    for (i in 1:length(chat_obj$messages)) {
-      if (chat_obj$messages[[i]]$role == 'system') {
-        cat(crayon::magenta('System:', chat_obj$messages[[i]]$content, '\n'))
+    cli::cli_div(
+      theme = list(
+        span.system_msg = list(color = "magenta"),
+        span.assistant_msg = list(color = "blue"),
+        span.user_msg = list(color = "green")
+      )
+    )
+
+    for (i in seq_along(chat_obj$messages)) {
+      if (chat_obj$messages[[i]]$role == "system") {
+        cli::cli_text("{.system_msg System: {chat_obj$messages[[i]]$content}}")
       }
 
-      if (chat_obj$messages[[i]]$role == 'user'){
-        cat(crayon::green('User:', chat_obj$messages[[i]]$content, '\n'))
+      if (chat_obj$messages[[i]]$role == "user") {
+        cli::cli_text("{.user_msg User: {chat_obj$messages[[i]]$content}}")
       }
 
-      if (chat_obj$messages[[i]]$role == 'assistant'){
-        cat(crayon::blue('Assistant:', chat_obj$messages[[i]]$content, '\n'))
+      if (chat_obj$messages[[i]]$role == "assistant") {
+        cli::cli_text("{.assistant_msg Assistant: {chat_obj$messages[[i]]$content}}")
       }
     }
   }
@@ -65,6 +73,4 @@ extract_chat <- function(chat_obj, silent = FALSE) {
   } else {
     return(msg_tibble)
   }
-
 }
-
