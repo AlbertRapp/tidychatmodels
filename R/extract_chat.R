@@ -38,17 +38,25 @@
 #'   }
 extract_chat <- function(chat_obj, silent = FALSE) {
   if (!silent) {
+    cli::cli_div(
+      theme = list(
+        span.system_msg = list(color = "magenta"),
+        span.assistant_msg = list(color = "blue"),
+        span.user_msg = list(color = "green")
+      )
+    )
+
     for (i in seq_along(chat_obj$messages)) {
       if (chat_obj$messages[[i]]$role == "system") {
-        cli::cli_text("{.field System}: {chat_obj$messages[[i]]$content}")
+        cli::cli_text("{.system_msg System: {chat_obj$messages[[i]]$content}}")
       }
 
       if (chat_obj$messages[[i]]$role == "user") {
-        cli::cli_text("{.field User}: {chat_obj$messages[[i]]$content}")
+        cli::cli_text("{.user_msg User: {chat_obj$messages[[i]]$content}}")
       }
 
       if (chat_obj$messages[[i]]$role == "assistant") {
-        cli::cli_text("{.field Assistant}: {chat_obj$messages[[i]]$content}")
+        cli::cli_text("{.assistant_msg Assistant: {chat_obj$messages[[i]]$content}}")
       }
     }
   }
