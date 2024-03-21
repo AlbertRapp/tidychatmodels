@@ -15,7 +15,8 @@
 #' chat_mistral <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY'))
 #' }
 create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 11434 else NULL, api_version = '') {
-  if (vendor != 'openai' & vendor != 'mistral' & vendor != 'ollama' & vendor != 'anthropic') stop('Unsupported vendor')
+
+  rlang::arg_match(vendor, c('openai', 'mistral', 'ollama', 'anthropic', 'azure'))
 
   if (vendor == 'openai') {
     # https://platform.openai.com/docs/api-reference/making-requests
