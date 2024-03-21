@@ -71,7 +71,7 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
       base_url = options$endpoint
     ) |>
       httr2::req_url_path_append("openai/deployments") |>
-      httr2::req_url_path_append(options$deployment_name) |>
+      httr2::req_url_path_append(options$model) |>
       httr2::req_url_path_append(options$task) |>
       httr2::req_url_query("api-version" = options$api_version) |>
       httr2::req_headers("api-key" = options$api_key)
