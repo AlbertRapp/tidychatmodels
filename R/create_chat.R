@@ -74,9 +74,9 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
       httr2::req_url_path_append(options$model) |>
       httr2::req_url_path_append(options$task) |>
       httr2::req_url_query("api-version" = options$api_version) |>
-      httr2::req_headers("api-key" = options$api_key)
-    httr2::req_headers('Authorization' = paste('Bearer', api_key))
-    if (rlang::is_true(options$use_token)) {
+      httr2::req_headers("api-key" = paste('Bearer', options$api_key))
+    if (rlang::is_true(as.logical(options$use_token))) {
+      cli::cli_inform("Fetching Azure token")
       token <- retrieve_azure_token(tenant_id     = options$tenant_id,
                                     client_id     = options$client_id,
                                     client_secret = options$client_secret)
