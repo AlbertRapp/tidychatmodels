@@ -80,11 +80,10 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
       token <- retrieve_azure_token(tenant_id     = options$tenant_id,
                                     client_id     = options$client_id,
                                     client_secret = options$client_secret)
-      engine <- response |>
+      engine <- engine |>
         httr2::req_auth_bearer_token(token = token)
     }
   }
-}
 
   if (vendor == 'ollama') {
     chat <- list(

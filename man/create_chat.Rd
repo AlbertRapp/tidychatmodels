@@ -8,7 +8,8 @@ create_chat(
   vendor,
   api_key = "",
   port = if (vendor == "ollama") 11434 else NULL,
-  api_version = ""
+  api_version = "",
+  options = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ create_chat(
 \item{port}{The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.}
 
 \item{api_version}{Api version that is required for Anthropic}
+
+\item{options}{A list of additional options that can be passed to the chat engine. Currently used for Azure OpenAI service only.}
 }
 \value{
 A chat object
