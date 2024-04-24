@@ -18,9 +18,9 @@ create_chat(
 
 new_chat(engine, object, ...)
 
-new_chat_openai(key)
+new_chat_openai(key = Sys.getenv("OPENAI_API_KEY"))
 
-new_chat_mistral(key)
+new_chat_mistral(key = Sys.getenv("MISTRAL_API_KEY"))
 
 new_chat_ollama(port)
 

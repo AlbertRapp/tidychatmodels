@@ -72,7 +72,6 @@ prepare_engine <- function(chat, ...) UseMethod("prepare_engine")
 #' @export
 prepare_engine.tidychat <- function(chat, ...) {
   chat |>
-    attr("engine") |>
     httr2::req_body_json(
       data = rlang::list2(
         messages = get_messages(chat),

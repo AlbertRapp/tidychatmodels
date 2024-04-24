@@ -2,9 +2,12 @@
 % Please edit documentation in R/extract_chat.R
 \name{extract_chat}
 \alias{extract_chat}
+\alias{extract_chat.tidychat}
 \title{Prints all messages to the console and saves them invisibly}
 \usage{
 extract_chat(chat, silent = FALSE)
+
+\method{extract_chat}{tidychat}(chat, silent = FALSE)
 }
 \arguments{
 \item{chat}{A chat object created from `create_chat()`}
@@ -17,6 +20,11 @@ A chat object with the responses added
 \description{
 Prints all messages to the console and saves them invisibly
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{extract_chat(tidychat)}: Extracts the chat messages from a `tidychat` object.
+
+}}
 \examples{
 \dontrun{dotenv::load_dot_env()
 chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>

@@ -4,7 +4,6 @@
 #' @param silent A logical vector with one element. If TRUE, the messages are not printed to the console.
 #'
 #' @return A chat object with the responses added
-#' @export
 #'
 #' @examples
 #' \dontrun{dotenv::load_dot_env()
@@ -36,7 +35,13 @@
 #'     perform_chat()
 #'   msgs_mistral <- chat_mistral |> extract_chat()
 #'   }
-extract_chat <- function(chat, silent = FALSE) {
+#' @export
+#' @name extract_chat
+extract_chat <- function(chat, silent = FALSE) UseMethod("extract_chat")
+
+#' @describeIn extract_chat Extracts the chat messages from a `tidychat` object.
+#' @export
+extract_chat.tidychat <- function(chat, silent = FALSE) {
   if (!silent) {
     cli::cli_div(
       theme = list(
@@ -46,22 +51,22 @@ extract_chat <- function(chat, silent = FALSE) {
       )
     )
 
-    for (i in seq_along(chat$messages)) {
-      if (chat$messages[[i]]$role == "system") {
+    for (msg in get_messages(chat)) {
+      if (msg$role == "system") {
         cli::cli_text("{.system_msg System: {chat$messages[[i]]$content}}")
       }
 
-      if (chat$messages[[i]]$role == "user") {
+      if (msg$role == "user") {
         cli::cli_text("{.user_msg User: {chat$messages[[i]]$content}}")
       }
 
-      if (chat$messages[[i]]$role == "assistant") {
+      if (msg[[i]]$role == "assistant") {
         cli::cli_text("{.assistant_msg Assistant: {chat$messages[[i]]$content}}")
       }
     }
   }
 
-  transposed_and_flattened_chats <- chat$messages |>
+  transposed_and_flattened_chats <- get_messages(chat) |>
     purrr::transpose() |>
     purrr::map(unlist)
 
@@ -69,6 +74,7 @@ extract_chat <- function(chat, silent = FALSE) {
     role = transposed_and_flattened_chats$role,
     message = transposed_and_flattened_chats$content
   )
+
   if (!silent) 
     return(invisible(msg_tibble))
 

@@ -38,6 +38,7 @@ create_chat <- function(
   )
 
   switch(
+    vendor,
     openai = new_chat_openai(api_key),
     mistral = new_chat_mistral(api_key),
     ollama = new_chat_ollama(port),
@@ -75,22 +76,21 @@ knit_print.chat <- function(x, ...) {
 #' @export
 #' @rdname create_chat
 new_chat <- function(engine, object, ...){
-  stopifnot(!...length() == 0)
   structure(
-    object = object,
+    object,
     engine = engine,
     messages = list(),
     params = list(...),
     model = NULL,
     uses = 0L,
-    class = c("tidychat", engine)
+    class = c("tidychat", engine, class(object))
   )
 }
 
 #' @export
 #' @rdname create_chat
-new_chat_openai <- function(key){
-  stopifnot(!missing(key))
+new_chat_openai <- function(key = Sys.getenv("OPENAI_API_KEY")){
+  stopifnot(key != "")
   # https://platform.openai.com/docs/api-reference/making-requests
   req <- httr2::request(
     base_url = "https://api.openai.com/v1/chat/completions"
@@ -105,8 +105,8 @@ new_chat_openai <- function(key){
 
 #' @export
 #' @rdname create_chat
-new_chat_mistral <- function(key){
-  stopifnot(!missing(key))
+new_chat_mistral <- function(key = Sys.getenv("MISTRAL_API_KEY")){
+  stopifnot(key != "")
   # https://docs.mistral.ai/
   req <- httr2::request(
     base_url = "https://api.mistral.ai/v1/chat/completions"
@@ -132,7 +132,7 @@ new_chat_ollama <- function(port) {
     )
   )
   
-  new_chat("ollama", req)
+  new_chat("ollama", req, stream = FALSE)
 }
 
 #' @export
