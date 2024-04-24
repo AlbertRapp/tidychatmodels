@@ -2,12 +2,15 @@
 % Please edit documentation in R/add_message.R
 \name{add_message}
 \alias{add_message}
+\alias{add_message.tidychat}
 \title{Add messages to a chat object.}
 \usage{
-add_message(chat_obj, message, role = "user")
+add_message(chat, message, role = "user")
+
+\method{add_message}{tidychat}(chat, message, role = "user")
 }
 \arguments{
-\item{chat_obj}{A chat object created from `create_chat()`}
+\item{chat}{A chat object of class `tidychat`.}
 
 \item{message}{A character vector with one element. The message to add to the chat.}
 
@@ -19,6 +22,11 @@ A chat object with the messages added
 \description{
 Add messages to a chat object.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{add_message(tidychat)}: Add a message to a `tidychat` object.
+
+}}
 \examples{
 \dontrun{dotenv::load_dot_env()
 chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>

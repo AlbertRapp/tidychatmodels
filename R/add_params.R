@@ -24,8 +24,3 @@ add_params <- function(chat_obj, ...) {
   }
   chat_obj
 }
-
-
-
-
-

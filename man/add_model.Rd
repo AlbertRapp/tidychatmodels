@@ -4,12 +4,15 @@
 \alias{add_model}
 \title{Add a model to a chat object.}
 \usage{
-add_model(chat_obj, model)
+add_model(chat, model)
 }
 \arguments{
-\item{chat_obj}{A chat object created from `create_chat()`}
+\item{chat}{An object of class `tidychat`.}
 
-\item{model}{A character vector with one element. The model to use for the chat. You can use any chat completion model from openAI and mistral.ai here. Refer to their API docs for specific names.}
+\item{model}{A character vector with one element. 
+The model to use for the chat. 
+You can use any chat completion model from openAI and mistral.ai here. 
+Refer to their API docs for specific names.}
 }
 \value{
 A chat object with the model added

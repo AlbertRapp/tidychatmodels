@@ -4,10 +4,10 @@
 \alias{extract_chat}
 \title{Prints all messages to the console and saves them invisibly}
 \usage{
-extract_chat(chat_obj, silent = FALSE)
+extract_chat(chat, silent = FALSE)
 }
 \arguments{
-\item{chat_obj}{A chat object created from `create_chat()`}
+\item{chat}{A chat object created from `create_chat()`}
 
 \item{silent}{A logical vector with one element. If TRUE, the messages are not printed to the console.}
 }
