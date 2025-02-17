@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> This package is superseded by the [`{ellmer}`](https://ellmer.tidyverse.org/) package. It has similarly easy syntax and has way more functionalities compared to {tidychatmodels}. If you're looking for tutorials on how to use AI with R and {ellmer}, you can check out my "AI with R" book at [air.albert-rapp.de](https://air.albert-rapp.de).
+
+
 
 
 <!-- badges: start -->
