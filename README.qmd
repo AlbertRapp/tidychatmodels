@@ -251,3 +251,26 @@ ollama_chat |>
   extract_chat()
 ```
 
+### Configuring Azure OpenAI
+
+To use Azure OpenAI with `tidychatmodels`, you need to provide your Azure OpenAI credentials. You can do this by setting the following environment variables:
+
+- `AZURE_OPENAI_KEY`: Your Azure OpenAI API key.
+- `AZURE_OPENAI_ENDPOINT`: The endpoint URL for your Azure OpenAI resource.
+- `AZURE_OPENAI_API_VERSION`: The API version to use (e.g., "2023-03-15-preview").
+- `AZURE_OPENAI_DEPLOYMENT_NAME`: The name of your Azure OpenAI deployment.
+- `AZURE_OPENAI_TASK`: The task type (e.g., "completion" or "chat").
+- `AZURE_OPENAI_USE_TOKEN` (optional): Set to "true" if you want to use an access token instead of an API key.
+- `AZURE_OPENAI_TENANT_ID` (optional): Your Azure tenant ID, required if using an access token.
+- `AZURE_OPENAI_CLIENT_ID` (optional): Your Azure client ID, required if using an access token.
+- `AZURE_OPENAI_CLIENT_SECRET` (optional): Your Azure client secret, required if using an access token.
+
+You can set these environment variables in your `.Renviron` file, using `Sys.setenv()` in your R script, or using `.env` file along with the `{dotenv}` package as described in the previous section.
+
+The `config_list_azure()` function is used internally by `tidychatmodels` to retrieve the Azure OpenAI configuration from the environment variables. You don't need to call this function directly if you environmental variables are set.
+
+If you set `AZURE_OPENAI_USE_TOKEN` to "true", `tidychatmodels` will use the `retrieve_azure_token()` function to obtain an access token using your Azure tenant ID, client ID, and client secret. This is useful in cases where you need to use an access token instead of an API key for authentication.
+
+Note that you only need to provide the token-related arguments (`AZURE_OPENAI_TENANT_ID`, `AZURE_OPENAI_CLIENT_ID`, `AZURE_OPENAI_CLIENT_SECRET`) if you are using an access token for authentication. If you are using an API key, you can omit these arguments.
+
+Once you have set the required environment variables, you can use `create_chat('azure')` to create a chat object for Azure OpenAI, similar to how you would use other vendors like OpenAI or Mistral.ai.

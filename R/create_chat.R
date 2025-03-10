@@ -4,6 +4,7 @@
 #' @param api_key The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.
 #' @param port The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.
 #' @param api_version Api version that is required for Anthropic
+#' @param options A list of additional options that can be passed to the chat engine. Currently used for Azure OpenAI service only.
 #'
 #' @return A chat object
 #' @export
@@ -14,8 +15,9 @@
 #' chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))
 #' chat_mistral <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY'))
 #' }
-create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 11434 else NULL, api_version = '') {
-  if (vendor != 'openai' & vendor != 'mistral' & vendor != 'ollama' & vendor != 'anthropic') stop('Unsupported vendor')
+create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 11434 else NULL, api_version = '', options = NULL) {
+
+  rlang::arg_match(vendor, c('openai', 'mistral', 'ollama', 'anthropic', 'azure'))
 
   if (vendor == 'openai') {
     # https://platform.openai.com/docs/api-reference/making-requests
@@ -63,6 +65,25 @@ create_chat <- function(vendor, api_key = '', port = if (vendor == 'ollama') 114
       )
   }
 
+  if (vendor == 'azure') {
+    if (is.null(options)) options <- config_list_azure()
+    engine <- httr2::request(
+      base_url = options$endpoint
+    ) |>
+      httr2::req_url_path_append("openai/deployments") |>
+      httr2::req_url_path_append(options$model) |>
+      httr2::req_url_path_append(options$task) |>
+      httr2::req_url_query("api-version" = options$api_version) |>
+      httr2::req_headers("api-key" = options$api_key)
+    if (rlang::is_true(as.logical(options$use_token))) {
+      cli::cli_inform("Fetching Azure token")
+      token <- retrieve_azure_token(tenant_id     = options$tenant_id,
+                                    client_id     = options$client_id,
+                                    client_secret = options$client_secret)
+      engine <- engine |>
+        httr2::req_auth_bearer_token(token = token)
+    }
+  }
 
   if (vendor == 'ollama') {
     chat <- list(
