@@ -2,14 +2,20 @@
 % Please edit documentation in R/perform_chat.R
 \name{perform_chat}
 \alias{perform_chat}
+\alias{perform_chat.tidychat}
 \title{Sends the chat to the engine and adds the response to the chat object}
 \usage{
-perform_chat(chat_obj, dry_run = FALSE)
+perform_chat(chat, dry_run = FALSE, ...)
+
+\method{perform_chat}{tidychat}(chat, dry_run = FALSE, ...)
 }
 \arguments{
-\item{chat_obj}{A chat object created from `create_chat()`}
+\item{chat}{An object of class `tidychat`.}
 
-\item{dry_run}{A logical indicating whether to return the prepared `httr2` request without actually sending out the request to the vendor. Defaults to FALSE.}
+\item{dry_run}{A logical indicating whether to return the prepared_engine
+`httr2` request without actually sending out the request to the vendor. Defaults to FALSE.}
+
+\item{...}{Ignored for future compatibility.}
 }
 \value{
 A chat object with the responses added
@@ -17,6 +23,11 @@ A chat object with the responses added
 \description{
 Sends the chat to the engine and adds the response to the chat object
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{perform_chat(tidychat)}: Perform a chat on a `tidychat` object.
+
+}}
 \examples{
 \dontrun{dotenv::load_dot_env()
 chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>
@@ -45,4 +56,5 @@ chat_mistral <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY')) |>
   chat_mistral <- chat_mistral |>
     perform_chat()
  }
+
 }

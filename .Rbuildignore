@@ -6,3 +6,5 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^README\.qmd$
+^tidychatmodels\.png$

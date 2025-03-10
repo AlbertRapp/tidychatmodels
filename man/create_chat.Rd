@@ -2,23 +2,45 @@
 % Please edit documentation in R/create_chat.R
 \name{create_chat}
 \alias{create_chat}
+\alias{new_chat}
+\alias{new_chat_openai}
+\alias{new_chat_mistral}
+\alias{new_chat_ollama}
+\alias{new_chat_anthropic}
 \title{Create a chat object.}
 \usage{
 create_chat(
-  vendor,
+  vendor = c("openai", "mistral", "ollama", "anthropic"),
   api_key = "",
   port = if (vendor == "ollama") 11434 else NULL,
   api_version = ""
 )
+
+new_chat(engine, object, ...)
+
+new_chat_openai(key = Sys.getenv("OPENAI_API_KEY"))
+
+new_chat_mistral(key = Sys.getenv("MISTRAL_API_KEY"))
+
+new_chat_ollama(port)
+
+new_chat_anthropic(key, version)
 }
 \arguments{
-\item{vendor}{A character vector with one element. Currently, only 'openai', 'mistral', 'anthropic' and 'ollama' are supported.}
+\item{vendor, engine}{A character vector with one element. 
+Currently, only "openai", "mistral", "anthropic" and "ollama" are supported.}
 
-\item{api_key}{The API key for the vendor's chat engine. If the vendor is 'ollama', this parameter is not required.}
+\item{api_key, key}{The API key for the vendor"s chat engine. 
+If the vendor is "ollama", this parameter is not required.}
 
-\item{port}{The port number for the ollama chat engine. Default to ollama's standard port. If the vendor is not 'ollama', this parameter is not required.}
+\item{port}{The port number for the ollama chat engine. 
+Default to ollama"s standard port. If the vendor is not "ollama", this parameter is not required.}
 
-\item{api_version}{Api version that is required for Anthropic}
+\item{api_version, version}{Api version that is required for Anthropic}
+
+\item{object}{New query object from [httr2::request].}
+
+\item{...}{Additional parameters to be passed to the chat engine query.}
 }
 \value{
 A chat object
@@ -29,7 +51,7 @@ Create a chat object.
 \examples{
 \dontrun{
 dotenv::load_dot_env()
-chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))
-chat_mistral <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY'))
+chat_openai <- create_chat("openai", Sys.getenv("OAI_DEV_KEY"))
+chat_mistral <- create_chat("mistral", Sys.getenv("MISTRAL_DEV_KEY"))
 }
 }

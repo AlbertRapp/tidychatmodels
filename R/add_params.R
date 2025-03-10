@@ -4,7 +4,6 @@
 #' @param ... A named list of parameters to add to the chat object. Must be valid parameters from the API documentation.
 #'
 #' @return A chat object with the parameters added
-#' @export
 #'
 #' @examples
 #' \dontrun{dotenv::load_dot_env()
@@ -16,16 +15,26 @@
 #'   add_model('mistral-large-latest') |>
 #'   add_params('temperature' = 0.5, 'max_tokens' = 100)
 #' }
-add_params <- function(chat_obj, ...) {
-  if (is.null(chat_obj$params)) {
-    chat_obj$params <- utils::modifyList(list(), list(...))
-  } else {
-    chat_obj$params <- utils::modifyList(chat_obj$params, list(...))
-  }
-  chat_obj
+#' @export
+#' @name add_params
+add_params <- function(chat, ...) UseMethod("add_params")
+
+#' @describeIn add_params Add parameters to a `tidychat` object.
+#' @export
+add_params.tidychat <- function(chat, ...) {
+  params <- modifyList(get_params(chat), list(...))
+  attr(chat, "params") <- params
+  chat
 }
 
+#' Get parameters from a chat object.
+#' @param chat An object of class `tidychat`.
+#' @export
+#' @name get_params
+get_params <- function(chat) UseMethod("get_params")
 
-
-
-
+#' @describeIn get_params Add parameters to a `tidychat` object.
+#' @export
+get_params.tidychat <- function(chat) {
+  attr(chat, "params")
+}

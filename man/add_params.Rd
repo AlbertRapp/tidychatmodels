@@ -2,14 +2,17 @@
 % Please edit documentation in R/add_params.R
 \name{add_params}
 \alias{add_params}
+\alias{add_params.tidychat}
 \title{Add a model to a chat object.}
 \usage{
-add_params(chat_obj, ...)
+add_params(chat, ...)
+
+\method{add_params}{tidychat}(chat, ...)
 }
 \arguments{
-\item{chat_obj}{A chat object created from `create_chat()`}
-
 \item{...}{A named list of parameters to add to the chat object. Must be valid parameters from the API documentation.}
+
+\item{chat_obj}{A chat object created from `create_chat()`}
 }
 \value{
 A chat object with the parameters added
@@ -17,6 +20,11 @@ A chat object with the parameters added
 \description{
 Add a model to a chat object.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{add_params(tidychat)}: Add parameters to a `tidychat` object.
+
+}}
 \examples{
 \dontrun{dotenv::load_dot_env()
 chat_openai <- create_chat('openai', Sys.getenv('OAI_DEV_KEY'))|>

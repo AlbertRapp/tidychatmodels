@@ -2,8 +2,10 @@ Type: Package
 Package: tidychatmodels
 Title: Chat With All Kinds of AI Models Through a Common Interface
 Version: 0.1.0
-Authors@R: 
-    person("Albert", "Rapp", , "info@albert-rapp.de", role = c("aut", "cre"))
+Authors@R: c(
+      person("Albert", "Rapp", , "info@albert-rapp.de", role = c("aut", "cre")),
+      person("John", "Coene", , "jcoenep@gmail.com", role = c("ctb"))
+    )
 Description: This packages lets you chat with models from openAI and
     mistral.ai really easily.  This package is set up in a modular fashion
     (similar to {tidymodels}) so that it is easy to switch between using
@@ -16,7 +18,6 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     cli,
-    glue,
     httr2,
     knitr,
     purrr,

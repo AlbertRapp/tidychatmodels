@@ -1,10 +1,12 @@
 #' Add a model to a chat object.
 #'
-#' @param chat_obj A chat object created from `create_chat()`
-#' @param model A character vector with one element. The model to use for the chat. You can use any chat completion model from openAI and mistral.ai here. Refer to their API docs for specific names.
+#' @param chat An object of class `tidychat`.
+#' @param model A character vector with one element. 
+#'   The model to use for the chat. 
+#'   You can use any chat completion model from openAI and mistral.ai here. 
+#'   Refer to their API docs for specific names.
 #'
 #' @return A chat object with the model added
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -15,8 +17,21 @@
 #' chat_mistral <- create_chat('mistral', Sys.getenv('MISTRAL_DEV_KEY')) |>
 #'   add_model('mistral-large-latest')
 #' }
-add_model <- function(chat_obj, model) {
-  chat_obj$model <- model
-  chat_obj
+#' @export
+#' @name add_model
+add_model <- function(chat, model) {
+  attr(chat, "model") <- model
+  chat
 }
 
+#' Get model from a chat object.
+#' @param chat An object of class `tidychat`.
+#' @export
+#' @name get_model
+get_model <- function(chat) UseMethod("get_model")
+
+#' @describeIn get_model Gets a model from a `tidychat` object.
+#' @export
+get_model.tidychat <- function(chat) {
+  attr(chat, "model")
+}

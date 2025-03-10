@@ -1,10 +1,11 @@
 #' Sends the chat to the engine and adds the response to the chat object
 #'
-#' @param chat_obj A chat object created from `create_chat()`
-#' @param dry_run A logical indicating whether to return the prepared `httr2` request without actually sending out the request to the vendor. Defaults to FALSE.
+#' @param chat An object of class `tidychat`.
+#' @param dry_run A logical indicating whether to return the prepared_engine
+#'   `httr2` request without actually sending out the request to the vendor. Defaults to FALSE.
+#' @param ... Ignored for future compatibility.
 #'
 #' @return A chat object with the responses added
-#' @export
 #'
 #' @examples
 #' \dontrun{dotenv::load_dot_env()
@@ -34,73 +35,97 @@
 #'   chat_mistral <- chat_mistral |>
 #'     perform_chat()
 #'  }
-perform_chat <- function(chat_obj, dry_run = FALSE) {
+#' 
+#' @export
+#' @name perform_chat
+perform_chat <- function(chat, dry_run = FALSE, ...) UseMethod("perform_chat")
 
-  if (chat_obj$vendor_name == 'anthropic') {
-    msgs <- chat_obj$messages
+#' @describeIn perform_chat Perform a chat on a `tidychat` object.
+#' @export
+perform_chat.tidychat <- function(chat, dry_run = FALSE, ...){
+  # prepare the query
+  prepared <- prepare_engine(chat)
 
-    non_system_msgs <- msgs[purrr::map_lgl(msgs, \(x) x$role != 'system')]
-    system_msg <- msgs[purrr::map_lgl(msgs, \(x) x$role == 'system')]
-    if (length(system_msg) > 1) stop('There can only be one system message')
+  # return early if dry run
+  if (dry_run) return(prepared)
 
-    if (length(system_msg) == 0) {
-      prepared_engine <- chat_obj$engine |>
-        httr2::req_body_json(
-          data = rlang::list2(
-            messages = non_system_msgs,
-            model = chat_obj$model,
-            !!!chat_obj$params
-          )
-        )
-    }
+  # perform the query
+  response <- perform_query(chat, prepared)
 
-    if (length(system_msg) == 1) {
-      prepared_engine <- chat_obj$engine |>
-        httr2::req_body_json(
-          data = rlang::list2(
-            messages = non_system_msgs,
-            model = chat_obj$model,
-            system = system_msg[[1]]$content,
-            !!!chat_obj$params
-          )
-        )
-    }
+  # increment the uses by 1
+  chat <- inc_uses(chat)
 
-  }
+  # post process the query
+  chat <- append_message(chat, response)
 
-  if (chat_obj$vendor_name != 'anthropic') {
-    prepared_engine <- chat_obj$engine |>
-      httr2::req_body_json(
-        data = rlang::list2(
-          messages = chat_obj$messages,
-          model = chat_obj$model,
-          !!!chat_obj$params
-        )
-      )
-  }
-
-
-  if (dry_run) return(prepared_engine)
-
-  response <- prepared_engine |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
-
-  if (chat_obj$vendor_name == 'ollama') {
-    chat_obj$messages[[length(chat_obj$messages) + 1]] <- response$message
-  }
-
-  if (chat_obj$vendor_name == 'anthropic') {
-    chat_obj$messages[[length(chat_obj$messages) + 1]] <- list(
-      role = 'assistant',
-      content = response$content[[1]]$text
-    )
-  }
-
-  if (chat_obj$vendor_name != 'ollama') {
-    chat_obj$messages[[length(chat_obj$messages) + 1]] <- response$choices[[1]]$message
-  }
-  chat_obj$usage[[length(chat_obj$usage) + 1]] <- response$usage
-  chat_obj
+  invisible(chat)
 }
 
+#' Prepare tidychat engine query
+#' @param chat An object of class `tidychat`.
+#' @param ... Ignored for future compatibility.
+#' @export
+#' @name prepare_engine
+prepare_engine <- function(chat, ...) UseMethod("prepare_engine")
+
+#' @describeIn prepare_engine Prepare a tidychat engine query.
+#' @export
+prepare_engine.tidychat <- function(chat, ...) {
+  chat |>
+    httr2::req_body_json(
+      data = rlang::list2(
+        messages = get_messages(chat),
+        model = get_model(chat),
+        !!!get_params(chat)
+      )
+    )
+}
+
+#' @describeIn prepare_engine Prepare an anthropic engine query.
+#' @export
+prepare_engine.anthropic <- function(chat, ...){
+  msgs <- get_messages(chat)
+
+  non_system_msgs <- msgs[purrr::map_lgl(msgs, \(x) x$role != "system")]
+  system_msg <- msgs[purrr::map_lgl(msgs, \(x) x$role == "system")]
+
+  if (length(system_msg) > 1) stop("There can only be one system message")
+
+  if (length(system_msg) == 0) {
+    prepared_engine <- get_engine(chat) |>
+      httr2::req_body_json(
+        data = rlang::list2(
+          messages = non_system_msgs,
+          model = get_model(chat),
+          !!!get_params(chat)
+        )
+      )
+    return(prepared_engine)
+  }
+
+  get_engine(chat) |>
+    httr2::req_body_json(
+      data = rlang::list2(
+        messages = non_system_msgs,
+        model = get_model(chat),
+        system = system_msg[[1]]$content,
+        !!!get_params(chat)
+      )
+    )
+}
+
+#' Perform a tidychat engine query
+#' @param chat An object of class `tidychat`.
+#' @param prepared_query A prepared query as returned by `prepare_engine`.
+#' @param ... Ignored for future compatibility.
+#' @export
+#' @name perform_query
+perform_query <- function(chat, prepared_query, ...) UseMethod("perform_query")
+
+#' @describeIn perform_query Perform a tidychat engine query.
+#' @export
+perform_query.tidychat <- function(chat, prepared_query, ...){
+  prepared_query |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
+}
